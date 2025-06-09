@@ -6,12 +6,15 @@ import chatRoute from './routes/chatRoute.js';
 dotenv.config();
 const app = express();
 
- app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://coder-army.netlify.app'  // Removed trailing slash
-  ], 
-}));
+// Enable CORS with credentials for your Netlify frontend
+const corsOptions = {
+  origin: 'https://coder-army.netlify.app', // No trailing slash, single origin
+  credentials: true                         // Important for cookies/auth headers
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Handle preflight requests
+
 app.use(express.json());
 app.use('/api', chatRoute);
 
